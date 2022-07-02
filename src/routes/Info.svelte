@@ -2,14 +2,15 @@
   export let params = {};
   import { onMount } from "svelte";
 
-  let _id = "",
-    note = "",
-    amount = 0,
-    timestamp = 0,
-    loading = true;
+  let expense = {
+      _id: "",
+      note: "",
+      amount: 0,
+      timestamp: 0,
+    }, loading = true;
 
   const onDel = async () => {
-    fetch(`/api?id=${_id}`, { method: "DELETE" })
+    fetch(`/api?id=${expense._id}`, { method: "DELETE" })
       .then((res) => {
         if (res.ok) return console.log((location.hash = "#/"));
         return console.warn(res.status);
@@ -21,11 +22,9 @@
     if (!params.id) return;
     try {
       const res = await fetch(`/api?id=${params.id}`);
-      const data = await res.json();
-      if (res.ok) {
-        console.log(params.id, data, res);
-        // destructure data plus params id if needed
-      } else console.warn(res);
+      const { data } = await res.json();
+      if (res.ok) expense = data;
+      else console.warn(res);
     } catch (err) {
       console.warn(err);
     } finally {
@@ -44,22 +43,35 @@
   </footer>
 {:else}
   <header>
-    <strong class={amount < 0 ? "re" : "gr"}>
-      {new Date(timestamp).toLocaleDateString()}
-      {new Date(timestamp).toLocaleTimeString()}
+    <strong class={expense.amount < 0 ? "re" : "gr"}>
+      {new Date(expense.timestamp).toLocaleDateString()}
+      {new Date(expense.timestamp).toLocaleTimeString()}
     </strong>
   </header>
   <section>
-    <!-- <div class={amount < 0 ? "re" : "gr"}>
-      {note}<br />${amount}
-    </div> -->
-    <input class={amount < 0 ? "re" : "gr"} type="text" placeholder="Note" bind:value={note} readonly />
-    <input class={amount < 0 ? "re" : "gr"} type="number" placeholder="Amount" bind:value={amount} readonly />
+    <input
+      class={expense.amount < 0 ? "re" : "gr"}
+      type="text"
+      placeholder="Note"
+      bind:value={expense.note}
+      readonly
+    />
+    <input
+      class={expense.amount < 0 ? "re" : "gr"}
+      type="number"
+      placeholder="Amount"
+      bind:value={expense.amount}
+      readonly
+    />
     <button on:click={onDel}> Delete Expense </button>
   </section>
   <footer>
-    <button on:click={() => (location.hash = "#/")}> Back Home </button>
-    <button on:click={() => (location.hash = `#/edit/${_id || params?.id}`)}> Edit Expense </button>
+    <button on:click={() => (location.hash = "#/")}>
+      Back Home
+    </button>
+    <button on:click={() => (location.hash = `#/edit/${expense._id ?? params.id}`)}>
+      Edit Expense
+    </button>
   </footer>
 {/if}
 

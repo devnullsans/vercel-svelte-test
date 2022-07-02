@@ -2,26 +2,29 @@
   export let params = {};
   import { onMount } from "svelte";
 
-  let _id = "",
-    note = "",
-    amount = 0,
-    timestamp = new Date(),
-    loading = true;
+  let expense = {
+      _id: "",
+      note: "",
+      amount: 0,
+      timestamp: new Date(),
+    }, loading = true;
 
   const onEdt = async () => {
     if (!params.id || loading) return;
     loading = true;
     try {
-      const res = await fetch(`/api?id=${_id}`, {
+      const res = await fetch(`/api?id=${expense._id}`, {
         method: "PUT",
-        body: JSON.stringify({ amount, note, timestamp: timestamp.getTime() }),
+        body: JSON.stringify({
+          amount: expense.amount,
+          note: expense.note,
+          timestamp: expense.timestamp.getTime()
+        }),
       });
-      console.log({ _id, amount, note, timestamp });
       const data = await res.json();
-      if (res.ok) {
-        console.log(params.id, data, res);
-        console.log((location.hash = "#/"));
-      } else console.warn(res);
+      console.log(params.id, expense, data, res);
+      if (res.ok) console.log((location.hash = "#/"));
+      else console.warn(res);
     } catch (err) {
       console.error(err);
     } finally {
@@ -33,15 +36,12 @@
     if (!params.id) return;
     try {
       const res = await fetch(`/api?id=${params.id}`);
-      const data = await res.json();
-      if (res.ok) {
-        console.log(params.id, data, res);
-        // destructure data plus params id if needed
-      } else console.warn(res);
-    } catch (err) {
-      console.warn(err);
-    } finally {
+      const { data } = await res.json();
+      if (res.ok) expense = { ...data, timestamp: new Date(data.timestamp) };
+      else console.warn(res);
       loading = false;
+    } catch (err) {
+      console.error(err);
     }
   });
 
@@ -57,16 +57,15 @@
   </footer>
 {:else}
   <header>
-    <strong class={amount < 0 ? "re" : "gr"}>
-      {timestamp?.toLocaleDateString()}
-      {timestamp?.toLocaleTimeString()}
+    <strong class={expense.amount < 0 ? "re" : "gr"}>
+      {expense.timestamp?.toLocaleDateString()}
+      {expense.timestamp?.toLocaleTimeString()}
     </strong>
   </header>
   <section>
-    <input type="datetime-local" on:input={(e) => (timestamp = new Date(e.target.value))} />
-    <input type="text" placeholder="Note" bind:value={note} />
-    <input type="number" placeholder="Amount" bind:value={amount} />
-    <!-- <input type="checkbox" bind:checked={withdraw} />Withdrawn? -->
+    <input type="datetime-local" on:input={(e) => (expense.timestamp = new Date(e.target.value))} />
+    <input type="text" placeholder="Note" bind:value={expense.note} />
+    <input type="number" placeholder="Amount" bind:value={expense.amount} />
   </section>
   <footer>
     <button on:click={() => (location.hash = "#/")}> Cancel Home </button>
