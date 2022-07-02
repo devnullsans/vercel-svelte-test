@@ -1,27 +1,27 @@
 <script>
-	let get;
-	
-	function handleScroll(event) {
-		get = (event.target.scrollTop + 10 > event.target.scrollHeight - event.target.clientHeight)
-		console.log('scrollTop', event.target.scrollTop);
-		console.log('clientHeight', event.target.clientHeight);
-		console.log('scrollHeight', event.target.scrollHeight);
-	}
+	import Router from 'svelte-spa-router';
+	import routes from './routes';
 </script>
 
+<main>
+	<Router {routes} />
+</main>
+
 <style>
-	section {
-		background-color: yellowgreen;
-		height: 400px;
-		overflow-y: auto;
+	main {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: stretch;
+		text-align: center;
+		padding: 1em;
+		max-width: 360px;
+    height: calc(100vh - 3em);
+    margin: 0 auto;
 	}
-	div {
-		border: 1px solid blue;
-		height: 400vh;
+
+	@media (min-width: 640px) {
+		main {
+			max-width: none;
+		}
 	}
 </style>
-
-<p>{get}</p>
-<section on:scroll={handleScroll}>
-	<div>scroll me !</div>
-</section>
