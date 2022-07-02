@@ -56,7 +56,7 @@
     flex-wrap: nowrap;
     justify-content: space-around;
     align-items: center;
-    font-size: 4em;
+    font-size: 2em;
     font-weight: 500;
   }
   section {
@@ -66,10 +66,10 @@
   input {
     display: block;
     width: 100%;
-    height: 4rem;
+    height: 2em;
     margin-top: 1em;
     margin-bottom: 1em;
-    font-size: 2em;
+    font-size: 1.5em;
     font-weight: 300;
   }
   footer {
