@@ -5,18 +5,15 @@
     amount = 0,
     timestamp = new Date();
 
-  const intFn = () => (timestamp = new Date());
   const desFn = () => clearInterval(id);
-  const id = setInterval(intFn, 5e2);
+  const id = setInterval(() => (timestamp = new Date()), 5e2);
 
   const onCha = (e) => {
-    console.log(e);
     desFn();
     timestamp = new Date(e.target.value);
   };
 
   const onSav = () => {
-    console.log({ note, amount, timestamp });
     fetch("/api", {
       method: "POST",
       body: JSON.stringify({ amount, note, timestamp: timestamp.getTime() }),
@@ -44,8 +41,11 @@
 </section>
 <footer>
   <!-- expense save -->
+  <button on:click={() => (location.hash = "#/")}>
+    Cancel Home
+  </button>
   <button on:click={onSav}>
-    Save
+    Save Expense
   </button>
 </footer>
 
@@ -62,10 +62,14 @@
   section {
     flex: 1 1 100%;
     overflow-y: auto;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-evenly;
+    align-items: stretch;
   }
   input {
     display: block;
-    width: 100%;
+    /* width: 100%; */
     height: 2em;
     margin-top: 1em;
     margin-bottom: 1em;
@@ -74,5 +78,9 @@
   }
   footer {
     flex: 1 1 20%;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
   }
 </style>
