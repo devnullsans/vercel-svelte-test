@@ -52,7 +52,8 @@
     <div class={expense.amount < 0 ? "re" : "gr"}><br />
       {new Date(expense.timestamp).toLocaleDateString()}<br />
       {new Date(expense.timestamp).toLocaleTimeString()}<br />
-      {expense.note} = ${expense.amount}<br />
+      {expense.note}<br />
+      ${expense.amount}<br />
     </div>
   {/each}
 </section>
