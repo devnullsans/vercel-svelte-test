@@ -10,9 +10,8 @@ export default async () => {
   try {
     const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
     await client.connect();
-    const db = await client.db(dbn);
     console.log("mongodb fresh");
-    return global.conn = conn = db;
+    return global.conn = conn = client.db(dbn);
   } catch (err) {
     throw new Error(err);
   }

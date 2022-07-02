@@ -2,12 +2,7 @@
   import { onMount } from "svelte";
 
   let toDate = new Date(),
-    expenses = [
-    // {_id: "62bfe4c4e693fb447b6a5478", timestamp: 1656743106288, note: 'Morning Test', amount: -20},
-    // {_id: "62bf4284383b9d464ee8446f", timestamp: 1656701571152, note: 'My Note', amount: -45},
-    // {_id: "26fb4e4c6e39bf44b7a64587", timestamp: 1656625175126, note: 'Some Note', amount: -60},
-    // {_id: "62b99bc11538b0aec75f047b", timestamp: 1656331200800, note: 'TXN-442', amount: 240},
-  ],
+    expenses = [],
     gain,
     loss,
     more = false;
@@ -42,9 +37,6 @@
   function handleScroll(event) {
     if (!more && event.target.scrollTop + 10 > event.target.scrollHeight - event.target.clientHeight)
       getExps();
-    console.log("scrollTop", event.target.scrollTop);
-    console.log("clientHeight", event.target.clientHeight);
-    console.log("scrollHeight", event.target.scrollHeight);
   }
 </script>
 

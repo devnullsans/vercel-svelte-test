@@ -2,12 +2,6 @@ import dbc from './_db';
 import { ObjectId } from 'mongodb';
 
 export default async (req, res) => {
-  console.log('req.url', req.url);
-  console.log('req.method', req.method);
-  console.log('req.cookies', req.cookies);
-  console.log('req.query', req.query);
-  console.log('req.headers', req.headers);
-  console.log('req.body', req.body);
   try {
     const db = await dbc();
     const collection = db.collection('expenses');

@@ -21,7 +21,7 @@
     </p>
 {/each}
 <p>
-  <a href="#">Home</a>
+  <a href="#/">Home</a>
 </p>
 <style>
 	h1 {
