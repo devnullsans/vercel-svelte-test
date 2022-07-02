@@ -23,7 +23,7 @@ export default async (req, res) => {
                 $lte: +to + 864e5
               }
             },
-            { sort: { timestamp: 1 } }
+            { sort: { timestamp: -1 } }
           ).toArray()
         });
       }
@@ -63,10 +63,10 @@ export default async (req, res) => {
         });
       }
       default:
-        return res.status(400).json({ message: 'HTTP Method not supported' });
+        return res.status(400).json({ error: 'HTTP Method not supported' });
     }
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: 'Internal Sever Error', message: err.message });
+    res.status(500).json({ error: 'Internal Sever Error' });
   }
 }
