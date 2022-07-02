@@ -2,7 +2,12 @@
   import { onMount } from "svelte";
 
   let toDate = new Date(),
-    expenses = [],
+    expenses = [
+    // {_id: "62bfe4c4e693fb447b6a5478", timestamp: 1656743106288, note: 'Morning Test', amount: -20},
+    // {_id: "62bf4284383b9d464ee8446f", timestamp: 1656701571152, note: 'My Note', amount: -45},
+    // {_id: "26fb4e4c6e39bf44b7a64587", timestamp: 1656625175126, note: 'Some Note', amount: -60},
+    // {_id: "62b99bc11538b0aec75f047b", timestamp: 1656331200800, note: 'TXN-442', amount: 240},
+  ],
     loading = false,
     gain,
     loss;
@@ -21,7 +26,6 @@
     } catch (err) {
       console.warn(err);
     } finally {
-      // toDate.setDate(toDate.getDate() - 1);
       loading = false;
     }
   }
@@ -36,15 +40,13 @@
 </script>
 
 <header>
-  <!-- expense stats -->
   <strong class="gr">${gain}</strong>
   <strong class="bl">${gain - loss}</strong>
   <strong class="re">${loss}</strong>
 </header>
 <section>
-  <!-- expense list -->
   {#each expenses as expense (expense._id)}
-    <div class={expense.amount < 0 ? "re" : "gr"}>
+    <div class={expense.amount < 0 ? "re" : "gr"} on:click={() => location.hash = `#/info/${expense._id}`}>
       <br />
       {new Date(expense.timestamp).toLocaleDateString()}<br />
       {new Date(expense.timestamp).toLocaleTimeString()}<br />
@@ -55,11 +57,9 @@
 </section>
 <footer>
   <button on:click={() => getExps()}>
-    <!-- get more -->
     Load Expense
   </button>
   <button on:click={() => (location.hash = "#/add")}>
-    <!-- expense add -->
     Add Expense
   </button>
 </footer>
@@ -73,15 +73,6 @@
     align-items: center;
     font-size: 2em;
     font-weight: 500;
-  }
-  .re {
-    color: #ff3e00;
-  }
-  .bl {
-    color: #222222;
-  }
-  .gr {
-    color: #4fff00;
   }
   section {
     flex: 1 1 100%;

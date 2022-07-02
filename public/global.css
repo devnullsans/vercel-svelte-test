@@ -61,3 +61,15 @@ button:not(:disabled):active {
 button:focus {
 	border-color: #666;
 }
+
+/* Custom css by me */
+
+.re {
+  color: #ff3e00;
+}
+.bl {
+  color: #222222;
+}
+.gr {
+  color: #4fff00;
+}

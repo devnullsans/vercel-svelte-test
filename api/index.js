@@ -7,19 +7,24 @@ export default async (req, res) => {
     const collection = db.collection('expenses');
     switch (req.method) {
       case 'GET': {
-        const { to } = req.query;
-        console.log('GET>', to);
-        return res.status(200).json({
-          data: await collection.find(
-            {
-              timestamp: {
-                $gte: +to,
-                $lte: +to + 864e5
-              }
-            },
-            { sort: { timestamp: -1 } }
-          ).toArray()
-        });
+        const { to, id } = req.query;
+        console.log('GET>', to, id);
+        if (id)
+          return res.status(200).json({ data: await collection.findOne({ _id: ObjectId(id) }) });
+        else if (to)
+          return res.status(200).json({
+            data: await collection.find(
+              {
+                timestamp: {
+                  $gte: +to,
+                  $lte: +to + 864e5
+                }
+              },
+              { sort: { timestamp: -1 } }
+            ).toArray()
+          });
+        else
+          return res.status(400).json({ error: 'Invalid Params Error' });
       }
       case 'POST': {
         const { amount, note, timestamp } = JSON.parse(req.body);

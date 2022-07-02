@@ -33,14 +33,12 @@
   </strong>
 </header>
 <section>
-  <!-- expense fields -->
   <input type="datetime-local" on:input={onCha} />
   <input type="text" placeholder="Note" bind:value={note} />
   <input type="number" placeholder="Amount" bind:value={amount} />
   <!-- <input type="checkbox" bind:checked={withdraw} />Withdrawn? -->
 </section>
 <footer>
-  <!-- expense save -->
   <button on:click={() => (location.hash = "#/")}>
     Cancel Home
   </button>
