@@ -5,12 +5,15 @@ import { ObjectId } from 'mongodb';
 export default async (req, res) => {
   try {
     const { authorization } = req.headers;
+    authr(authorization);
+/*
     if (
       !authorization ||
       authorization.indexOf('Bearer ') < 0 ||
       !authr(authorization)
     )
       return res.status(401).json({ error: 'Unauthorized Access' });
+*/
     const db = await dbc();
     const collection = db.collection('expenses');
     switch (req.method) {
