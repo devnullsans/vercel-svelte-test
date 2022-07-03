@@ -1,6 +1,7 @@
 <script>
   export let params = {};
   import { onMount } from "svelte";
+  import { push } from "svelte-spa-router";
 
   let expense = {
       _id: "",
@@ -10,19 +11,20 @@
     }, loading = true;
 
   const onEdt = async () => {
-    if (!params.id || loading) return;
+    if (loading) return;
     loading = true;
     try {
       const res = await fetch(`/api?id=${expense._id}`, {
         method: "PUT",
+        headers: { authorization: `Basic ${sessionStorage.getItem("code")}` },
         body: JSON.stringify({
           amount: expense.amount,
           note: expense.note,
           timestamp: expense.timestamp.getTime()
-        }),
+        })
       });
-      const data = await res.json();
-      if (res.ok) location.hash = "#/";
+      // const data = await res.json(); dont think i need data back
+      if (res.ok) push("/");
       else console.warn(res);
     } catch (err) {
       console.error(err);
@@ -33,17 +35,21 @@
 
   onMount(async () => {
     if (!params.id) return;
+    // loading = true; loading should be true by default
     try {
-      const res = await fetch(`/api?id=${params.id}`);
+      const res = await fetch(`/api?id=${params.id}`, {
+        method: 'GET',
+        headers: { authorization: `Basic ${sessionStorage.getItem("code")}` }
+      });
       const { data } = await res.json();
       if (res.ok) expense = { ...data, timestamp: new Date(data.timestamp) };
       else console.warn(res);
-      loading = false;
     } catch (err) {
       console.error(err);
+    } finally {
+      loading = false;
     }
   });
-
 </script>
 
 {#if loading}
@@ -52,7 +58,7 @@
   </header>
   <section>... ... ... ... ...</section>
   <footer>
-    <button on:click={() => (location.hash = "#/")}> Back Home </button>
+    <button on:click={() => push("/")}> Back Home </button>
   </footer>
 {:else}
   <header>
@@ -67,7 +73,7 @@
     <input type="number" placeholder="Amount" bind:value={expense.amount} />
   </section>
   <footer>
-    <button on:click={() => (location.hash = "#/")}> Cancel Home </button>
+    <button on:click={() => push("/")}> Cancel Changes </button>
     <button on:click={onEdt}> Save Changes </button>
   </footer>
 {/if}

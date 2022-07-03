@@ -1,13 +1,14 @@
 <script>
   import { onMount } from "svelte";
+  import { push } from "svelte-spa-router";
 
   let toDate = new Date(),
     expenses = [
-    // {_id: "62bfe4c4e693fb447b6a5478", timestamp: 1656743106288, note: 'Morning Test', amount: -20},
-    // {_id: "62bf4284383b9d464ee8446f", timestamp: 1656701571152, note: 'My Note', amount: -45},
-    // {_id: "26fb4e4c6e39bf44b7a64587", timestamp: 1656625175126, note: 'Some Note', amount: -60},
-    // {_id: "62b99bc11538b0aec75f047b", timestamp: 1656331200800, note: 'TXN-442', amount: 240},
-  ],
+      // {_id: "62bfe4c4e693fb447b6a5478", timestamp: 1656743106288, note: 'Morning Test', amount: -20},
+      // {_id: "62bf4284383b9d464ee8446f", timestamp: 1656701571152, note: 'My Note', amount: -45},
+      // {_id: "26fb4e4c6e39bf44b7a64587", timestamp: 1656625175126, note: 'Some Note', amount: -60},
+      // {_id: "62b99bc11538b0aec75f047b", timestamp: 1656331200800, note: 'TXN-442', amount: 240},
+    ],
     loading = false,
     gain,
     loss;
@@ -17,7 +18,10 @@
     if (loading) return;
     loading = true;
     try {
-      const res = await fetch(`/api?to=${toDate.getTime()}`);
+      const res = await fetch(`/api?to=${toDate.getTime()}`, {
+        method: "GET",
+        headers: { authorization: `Basic ${sessionStorage.getItem("code")}` }
+      });
       const { data } = await res.json();
       if (res.ok) {
         expenses = [...expenses, ...data];
@@ -46,8 +50,7 @@
 </header>
 <section>
   {#each expenses as expense (expense._id)}
-    <div class={expense.amount < 0 ? "re" : "gr"} on:click={() => location.hash = `#/info/${expense._id}`}>
-      <br />
+    <div class={expense.amount < 0 ? "re" : "gr"} on:click={() => push(`/info/${expense._id}`)}>
       {new Date(expense.timestamp).toLocaleDateString()}<br />
       {new Date(expense.timestamp).toLocaleTimeString()}<br />
       {expense.note}<br />
@@ -56,12 +59,8 @@
   {/each}
 </section>
 <footer>
-  <button on:click={() => getExps()}>
-    Load Expense
-  </button>
-  <button on:click={() => (location.hash = "#/add")}>
-    Add Expense
-  </button>
+  <button on:click={() => getExps()}> Load Expense </button>
+  <button on:click={() => push("/add")}> Add Expense </button>
 </footer>
 
 <style>

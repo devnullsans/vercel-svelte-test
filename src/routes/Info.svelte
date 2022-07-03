@@ -1,27 +1,41 @@
 <script>
   export let params = {};
   import { onMount } from "svelte";
+  import { pop, push } from "svelte-spa-router";
 
   let expense = {
       _id: "",
       note: "",
       amount: 0,
       timestamp: 0,
-    }, loading = true;
+    },
+    loading = true;
 
   const onDel = async () => {
-    fetch(`/api?id=${expense._id}`, { method: "DELETE" })
-      .then((res) => {
-        if (res.ok) return location.hash = "#/";
-        return console.warn(res);
-      })
-      .catch(console.error);
+    if (!params.id) return;
+    loading = true;
+    try {
+      const res = await fetch(`/api?id=${expense._id}`, {
+        method: "DELETE",
+        headers: { authorization: `Basic ${sessionStorage.getItem("code")}` }
+      });
+      if (res.ok) pop();
+      else console.warn(res);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      loading = false;
+    }
   };
 
   onMount(async () => {
     if (!params.id) return;
+    // loading = true; loading should be true by default
     try {
-      const res = await fetch(`/api?id=${params.id}`);
+      const res = await fetch(`/api?id=${params.id}`, {
+        method: "GET",
+        headers: { authorization: `Basic ${sessionStorage.getItem("code")}` }
+      });
       const { data } = await res.json();
       if (res.ok) expense = data;
       else console.warn(res);
@@ -39,7 +53,7 @@
   </header>
   <section>... ... ... ... ...</section>
   <footer>
-    <button on:click={() => (location.hash = "#/")}> Back Home </button>
+    <button on:click={() => pop()}> Back Home </button>
   </footer>
 {:else}
   <header>
@@ -53,25 +67,21 @@
       class={expense.amount < 0 ? "re" : "gr"}
       type="text"
       placeholder="Note"
-      bind:value={expense.note}
+      value={expense.note}
       readonly
     />
     <input
       class={expense.amount < 0 ? "re" : "gr"}
       type="number"
       placeholder="Amount"
-      bind:value={expense.amount}
+      value={expense.amount}
       readonly
     />
     <button on:click={onDel}> Delete Expense </button>
   </section>
   <footer>
-    <button on:click={() => (location.hash = "#/")}>
-      Back Home
-    </button>
-    <button on:click={() => (location.hash = `#/edit/${expense._id ?? params.id}`)}>
-      Edit Expense
-    </button>
+    <button on:click={() => pop()}> Back Home </button>
+    <button on:click={() => push(`/edit/${expense._id ?? params.id}`)}> Edit Expense </button>
   </footer>
 {/if}
 

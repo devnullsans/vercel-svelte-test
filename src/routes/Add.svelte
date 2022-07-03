@@ -1,26 +1,32 @@
 <script>
   import { onDestroy } from "svelte";
+  import { pop } from "svelte-spa-router";
 
   let note = "",
     amount = 0,
-    timestamp = new Date();
+    timestamp = new Date(),
+    loading = false;
 
   const desFn = () => clearInterval(id);
   const id = setInterval(() => (timestamp = new Date()), 5e2);
 
-  const onCha = (e) => {
-    desFn();
-    timestamp = new Date(e.target.value);
-  };
+  const onCha = (e) => (timestamp = desFn() ?? new Date(e.target.value));
 
-  const onSav = () => {
-    fetch("/api", {
-      method: "POST",
-      body: JSON.stringify({ amount, note, timestamp: timestamp.getTime() }),
-    }).then(res => {
-      if (res.ok) return location.hash = '#/';
-      return console.warn(res);
-    }).catch(console.error);
+  const onSav = async () => {
+    loading = true;
+    try {
+      const res = await fetch("/api", {
+        method: "POST",
+        headers: { authorization: `Basic ${sessionStorage.getItem("code")}` },
+        body: JSON.stringify({ amount, note, timestamp: timestamp.getTime() }),
+      });
+      if (res.ok) pop();
+      else console.warn(res);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      loading = false;
+    }
   };
 
   onDestroy(desFn);
@@ -39,12 +45,8 @@
   <!-- <input type="checkbox" bind:checked={withdraw} />Withdrawn? -->
 </section>
 <footer>
-  <button on:click={() => (location.hash = "#/")}>
-    Cancel Home
-  </button>
-  <button on:click={onSav}>
-    Save Expense
-  </button>
+  <button on:click={() => pop()}> Cancel Home </button>
+  <button on:click={onSav}> Save Expense </button>
 </footer>
 
 <style>
