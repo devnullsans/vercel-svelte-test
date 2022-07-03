@@ -1,12 +1,12 @@
 import dbc from './_utils/db';
-import authr from './_utils/auth';
+// import authr from './_utils/auth';
 import { ObjectId } from 'mongodb';
 
 export default async (req, res) => {
   try {
+/*
     const { authorization } = req.headers;
     authr(authorization);
-/*
     if (
       !authorization ||
       authorization.indexOf('Bearer ') < 0 ||

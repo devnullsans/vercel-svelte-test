@@ -22,8 +22,7 @@
         }),
       });
       const data = await res.json();
-      console.log(params.id, expense, data, res);
-      if (res.ok) console.log((location.hash = "#/"));
+      if (res.ok) location.hash = "#/";
       else console.warn(res);
     } catch (err) {
       console.error(err);

@@ -18,13 +18,13 @@
     loading = true;
     try {
       const res = await fetch(`/api?to=${toDate.getTime()}`);
-      const { data, error } = await res.json();
+      const { data } = await res.json();
       if (res.ok) {
         expenses = [...expenses, ...data];
         toDate.setDate(toDate.getDate() - 1);
-      } else console.warn(res, error);
+      } else console.warn(res);
     } catch (err) {
-      console.warn(err);
+      console.error(err);
     } finally {
       loading = false;
     }

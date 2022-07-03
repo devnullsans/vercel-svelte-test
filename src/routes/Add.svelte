@@ -18,8 +18,8 @@
       method: "POST",
       body: JSON.stringify({ amount, note, timestamp: timestamp.getTime() }),
     }).then(res => {
-      if (res.ok) return console.log(location.hash = '#/');
-      return console.warn(res.status);
+      if (res.ok) return location.hash = '#/';
+      return console.warn(res);
     }).catch(console.error);
   };
 

@@ -12,8 +12,8 @@
   const onDel = async () => {
     fetch(`/api?id=${expense._id}`, { method: "DELETE" })
       .then((res) => {
-        if (res.ok) return console.log((location.hash = "#/"));
-        return console.warn(res.status);
+        if (res.ok) return location.hash = "#/";
+        return console.warn(res);
       })
       .catch(console.error);
   };
