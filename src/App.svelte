@@ -1,10 +1,10 @@
 <script>
-	import Router, { replace } from 'svelte-spa-router';
+	import Router, { push } from 'svelte-spa-router';
 	import routes from './routes';
 
   function routeGuard(event) {
-    if (event.detail.route === '/login') replace('/');
-    else replace('/login');
+    if (event.detail.route === '/login') push('/');
+    else push('/login');
   }
 </script>
 

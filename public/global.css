@@ -24,7 +24,7 @@ main {
   margin: 0 auto;
 }
 
-@media (min-width: 640px) {
+@media (max-width: 360px) {
   main {
     max-width: none;
   }
@@ -50,9 +50,11 @@ section {
 }
 
 div {
-  padding: 1em 2em;
+  margin: 0.6em auto;
+  padding: 0.4em 0;
   font-size: 1.5em;
   font-weight: 300;
+  border-radius: 0.4em;
 }
 
 footer {
@@ -61,6 +63,11 @@ footer {
   flex-wrap: nowrap;
   justify-content: space-around;
   align-items: center;
+}
+
+strong {
+  padding: 0 0.16em;
+  border-radius: 0.2em;
 }
 
 h1 {
@@ -83,27 +90,19 @@ a:visited {
 	color: rgb(0,80,160);
 }
 
-label {
-	display: block;
+input, button {
+	font-family: inherit;
+	padding: 0.4em;
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 1em;
 }
 
 input {
-  display: block;
-  width: 80%;
+  width: 90%;
   height: 2em;
-  font-size: 1.5em;
   font-weight: 300;
-}
-
-input, button, select, textarea {
-	font-family: inherit;
-	font-size: inherit;
-	-webkit-padding: 0.4em 0;
-	padding: 0.4em;
-	margin: 0 0 0.5em 0;
-	box-sizing: border-box;
-	border: 1px solid #ccc;
-	border-radius: 2px;
+  font-size: 1.2em;
 }
 
 input:disabled {
@@ -114,6 +113,7 @@ button {
 	color: #333;
 	background-color: #f4f4f4;
 	outline: none;
+  font-size: 1em;
 }
 
 button:disabled {
@@ -125,20 +125,20 @@ button:not(:disabled):active {
 }
 
 button:focus {
-	border-color: #666;
+	border-color: #333;
 }
 
 /* Custom css by me */
 
 .re {
   color: #ff3e00;
-  background-color: #ff400038;
+  background-color: #ff400028;
 }
 .bl {
-  color: #222222;
-  background-color: #22222238;
+  color: #333;
+  background-color: #33333328;
 }
 .gr {
   color: #4fff00;
-  background-color: #51ff0038;
+  background-color: #51ff0028;
 }

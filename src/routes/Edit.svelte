@@ -60,17 +60,17 @@
 
 {#if loading}
   <header>
-    <strong>Loading</strong>
+    <strong class="bl">Loading</strong>
   </header>
-  <section>... ... ... ... ...</section>
+  <section>⬤ ⬤ ⬤</section>
   <footer>
     <button on:click={() => push("/")}> Back Home </button>
   </footer>
 {:else}
   <header>
     <strong class={expense.amount < 0 ? "re" : "gr"}>
-      {expense.timestamp?.toLocaleDateString()}
       {expense.timestamp?.toLocaleTimeString()}
+      {expense.timestamp?.toLocaleDateString()}
     </strong>
   </header>
   <section>

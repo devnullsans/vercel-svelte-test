@@ -1,6 +1,6 @@
 <script>
   import { onDestroy } from "svelte";
-  import { pop, push } from "svelte-spa-router";
+  import { pop } from "svelte-spa-router";
 
   let note = "",
     amount = 0,
@@ -39,24 +39,23 @@
 
 {#if loading}
   <header>
-    <strong>Loading</strong>
+    <strong class="bl">Loading</strong>
   </header>
-  <section>... ... ... ... ...</section>
+  <section>⬤ ⬤ ⬤</section>
   <footer>
     <button on:click={() => pop()}> Back Home </button>
   </footer>
 {:else}
   <header>
-    <strong>
-      {timestamp?.toLocaleDateString()}
+    <strong class="bl">
       {timestamp?.toLocaleTimeString()}
+      {timestamp?.toLocaleDateString()}
     </strong>
   </header>
   <section>
     <input type="datetime-local" on:input={onCha} />
     <input type="text" placeholder="Note" bind:value={note} />
     <input type="number" placeholder="Amount" bind:value={amount} />
-    <!-- <input type="checkbox" bind:checked={withdraw} />Withdrawn? -->
   </section>
   <footer>
     <button on:click={() => pop()}> Cancel Home </button>

@@ -42,22 +42,37 @@
   onMount(getExps);
 </script>
 
-<header>
-  <strong class="gr">${gain}</strong>
-  <strong class="bl">${gain - loss}</strong>
-  <strong class="re">${loss}</strong>
-</header>
-<section>
-  {#each expenses as expense (expense._id)}
-    <div class={expense.amount < 0 ? "re" : "gr"} on:click={() => push(`/info/${expense._id}`)}>
-      {new Date(expense.timestamp).toLocaleDateString()}<br />
-      {new Date(expense.timestamp).toLocaleTimeString()}<br />
-      {expense.note}<br />
-      ₹{expense.amount}<br />
-    </div>
-  {/each}
-</section>
-<footer>
-  <button on:click={() => getExps()}> Load Expense </button>
-  <button on:click={() => push("/add")}> Add Expense </button>
-</footer>
+{#if loading}
+  <header>
+    <strong class="bl">Loading</strong>
+  </header>
+  <section>⬤ ⬤ ⬤</section>
+  <footer>
+    <strong class="bl">Please Wait</strong>
+  </footer>
+{:else}
+  <header>
+    <strong class="gr">₹{gain}</strong>
+    <strong class="bl">₹{gain - loss}</strong>
+    <strong class="re">₹{loss}</strong>
+  </header>
+  <section>
+    {#each expenses as expense (expense._id)}
+      <div class={expense.amount < 0 ? "re" : "gr"} on:click={() => push(`/info/${expense._id}`)}>
+        {new Date(expense.timestamp).toLocaleTimeString()}
+        {new Date(expense.timestamp).toLocaleDateString()}
+        <br />₹{expense.amount} {expense.note}
+      </div>
+    {/each}
+  </section>
+  <footer>
+    <button on:click={() => getExps()}> Load Expense </button>
+    <button on:click={() => push("/add")}> New Expense </button>
+  </footer>
+{/if}
+
+<style>
+  section {
+    display: block;
+  }
+</style>

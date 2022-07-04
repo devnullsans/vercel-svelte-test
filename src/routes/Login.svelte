@@ -11,7 +11,7 @@
 </script>
 
 <header>
-  <strong>Enter Password</strong>
+  <strong class="bl">Enter Password</strong>
 </header>
 <section>
   <input type="password" placeholder="Password" bind:value={code} />

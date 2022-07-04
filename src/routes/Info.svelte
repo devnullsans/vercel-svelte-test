@@ -56,34 +56,25 @@
 
 {#if loading}
   <header>
-    <strong>Loading</strong>
+    <strong class="bl">Loading</strong>
   </header>
-  <section>... ... ... ... ...</section>
+  <section>⬤ ⬤ ⬤</section>
   <footer>
     <button on:click={() => pop()}> Back Home </button>
   </footer>
 {:else}
   <header>
     <strong class={expense.amount < 0 ? "re" : "gr"}>
-      {new Date(expense.timestamp).toLocaleDateString()}
       {new Date(expense.timestamp).toLocaleTimeString()}
+      {new Date(expense.timestamp).toLocaleDateString()}
     </strong>
   </header>
   <section>
-    <input
-      class={expense.amount < 0 ? "re" : "gr"}
-      type="text"
-      placeholder="Note"
-      value={expense.note}
-      readonly
-    />
-    <input
-      class={expense.amount < 0 ? "re" : "gr"}
-      type="number"
-      placeholder="Amount"
-      value={expense.amount}
-      readonly
-    />
+    <div class={expense.amount < 0 ? "re" : "gr"}>
+      {expense.note}
+      <br />
+      ₹{expense.amount}
+    </div>
     <button on:click={onDel}> Delete Expense </button>
   </section>
   <footer>
@@ -91,3 +82,10 @@
     <button on:click={() => push(`/edit/${expense._id ?? params.id}`)}> Edit Expense </button>
   </footer>
 {/if}
+
+<style>
+  div {
+    width: 100%;
+    line-height: 2em;
+  }
+</style>
