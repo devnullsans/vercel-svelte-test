@@ -27,6 +27,5 @@ export default {
     component: Edit,
     conditions: [ () => Boolean(sessionStorage.getItem('code')) ]
   }),
-  // The catch-all route must always be last
   '*': NotFound
 };

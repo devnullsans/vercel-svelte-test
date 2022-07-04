@@ -3,12 +3,7 @@
   import { push } from "svelte-spa-router";
 
   let toDate = new Date(),
-    expenses = [
-      // {_id: "62bfe4c4e693fb447b6a5478", timestamp: 1656743106288, note: 'Morning Test', amount: -20},
-      // {_id: "62bf4284383b9d464ee8446f", timestamp: 1656701571152, note: 'My Note', amount: -45},
-      // {_id: "26fb4e4c6e39bf44b7a64587", timestamp: 1656625175126, note: 'Some Note', amount: -60},
-      // {_id: "62b99bc11538b0aec75f047b", timestamp: 1656331200800, note: 'TXN-442', amount: 240},
-    ],
+    expenses = [],
     loading = false,
     gain,
     loss;
@@ -26,9 +21,13 @@
       if (res.ok) {
         expenses = [...expenses, ...data];
         toDate.setDate(toDate.getDate() - 1);
-      } else console.warn(res);
+      } else {
+        sessionStorage.removeItem("code");
+        push("/login");
+      }
     } catch (err) {
-      console.error(err);
+      sessionStorage.removeItem("code");
+      push("/login");
     } finally {
       loading = false;
     }
@@ -54,7 +53,7 @@
       {new Date(expense.timestamp).toLocaleDateString()}<br />
       {new Date(expense.timestamp).toLocaleTimeString()}<br />
       {expense.note}<br />
-      ${expense.amount}<br />
+      ₹{expense.amount}<br />
     </div>
   {/each}
 </section>
@@ -62,32 +61,3 @@
   <button on:click={() => getExps()}> Load Expense </button>
   <button on:click={() => push("/add")}> Add Expense </button>
 </footer>
-
-<style>
-  header {
-    flex: 1 1 20%;
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-around;
-    align-items: center;
-    font-size: 2em;
-    font-weight: 500;
-  }
-  section {
-    flex: 1 1 100%;
-    overflow-y: auto;
-  }
-  div {
-    margin-top: 1em;
-    margin-bottom: 1em;
-    font-size: 1.5em;
-    font-weight: 300;
-  }
-  footer {
-    flex: 1 1 20%;
-    display: flex;
-    flex-wrap: nowrap;
-    justify-content: space-around;
-    align-items: center;
-  }
-</style>

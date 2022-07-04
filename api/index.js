@@ -16,7 +16,7 @@ export default async (req, res) => {
     switch (req.method) {
       case 'GET': {
         const { to, id } = req.query;
-        console.log('GET>', to, id);
+        // console.log('GET>', to, id);
         if (id)
           return res.status(200).json({ data: await collection.findOne({ _id: ObjectId(id) }) });
         else if (to)
@@ -36,7 +36,7 @@ export default async (req, res) => {
       }
       case 'POST': {
         const { amount, note, timestamp } = JSON.parse(req.body);
-        console.log('POST>', amount, note, timestamp);
+        // console.log('POST>', amount, note, timestamp);
         return res.status(200).json({
           data: await collection.insertOne({
             amount,
@@ -48,7 +48,7 @@ export default async (req, res) => {
       case 'PUT': {
         const { id } = req.query;
         const { amount, note, timestamp } = JSON.parse(req.body);
-        console.log('PUT>', id, amount, note, timestamp);
+        // console.log('PUT>', id, amount, note, timestamp);
         return res.status(200).json({
           data: await collection.findOneAndUpdate(
             { _id: ObjectId(id) },
@@ -64,7 +64,7 @@ export default async (req, res) => {
       }
       case 'DELETE': {
         const { id } = req.query;
-        console.log('DELETE>', id);
+        // console.log('DELETE>', id);
         return res.status(200).json({
           data: await collection.findOneAndDelete({ _id: ObjectId(id) })
         });
