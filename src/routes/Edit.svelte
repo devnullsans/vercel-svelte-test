@@ -64,7 +64,7 @@
   </header>
   <section>⬤ ⬤ ⬤</section>
   <footer>
-    <button on:click={() => push("/")}> Back Home </button>
+    <strong class="bl">Please Wait</strong>
   </footer>
 {:else}
   <header>
