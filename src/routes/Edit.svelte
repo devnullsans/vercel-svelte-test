@@ -7,7 +7,7 @@
       _id: "",
       note: "",
       amount: 0,
-      timestamp: new Date(),
+      timestamp: new Date()
     }, loading = true;
 
   const onEdt = async () => {

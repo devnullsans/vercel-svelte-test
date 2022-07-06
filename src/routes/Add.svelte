@@ -2,8 +2,8 @@
   import { onDestroy } from "svelte";
   import { pop } from "svelte-spa-router";
 
-  let note = "",
-    amount = 0,
+  let note,
+    amount,
     timestamp = new Date(),
     loading = false;
 

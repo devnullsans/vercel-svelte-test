@@ -8,8 +8,7 @@
       note: "",
       amount: 0,
       timestamp: 0,
-    },
-    loading = true;
+    }, loading = true;
 
   const onDel = async () => {
     if (!params.id) return;
