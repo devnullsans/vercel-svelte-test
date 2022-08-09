@@ -32,7 +32,6 @@
       push("/login");
     } finally {
       loading = false;
-      console.log(toDate.getTime(), loads);
     }
   }
 

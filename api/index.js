@@ -16,7 +16,7 @@ export default async (req, res) => {
     switch (req.method) {
       case 'GET': {
         const { id, to, w, m } = req.query;
-        console.log('GET>', to, id, w, m);
+        // console.log('GET>', to, id, w, m);
         if (id)
           return res.status(200).json({ data: await collection.findOne({ _id: ObjectId(id) }) });
         else if (to)
