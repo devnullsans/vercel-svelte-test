@@ -6,6 +6,7 @@
     expenses = [],
     loading = false,
     loads = 0,
+    search = '',
     gain,
     loss;
   toDate.setHours(0, 0, 0, 0);
@@ -35,12 +36,8 @@
     }
   }
 
-  $: gain = +expenses
-    .filter((exp) => exp.amount > 0)
-    .reduce((a, s) => a + s.amount, 0);
-  $: loss = -expenses
-    .filter((exp) => exp.amount < 0)
-    .reduce((a, s) => a + s.amount, 0);
+  $: gain = +expenses.reduce((tot, exp) => tot + ((exp.note.includes(search) && (exp.amount > 0)) ? exp.amount : 0), 0);
+  $: loss = -expenses.reduce((tot, exp) => tot + ((exp.note.includes(search) && (exp.amount < 0)) ? exp.amount : 0), 0);
   onMount(getExps);
 </script>
 
@@ -59,17 +56,18 @@
     <strong class="re">₹{loss}</strong>
   </header>
   <section>
-    {#each expenses as expense (expense._id)}
+    {#each expenses.filter(ex => ex.note.includes(search)) as expense (expense._id)}
       <div class={expense.amount < 0 ? "re" : "gr"} on:click={() => push(`/info/${expense._id}`)}>
         {new Date(expense.timestamp).toLocaleTimeString()}
         {new Date(expense.timestamp).toLocaleDateString()}
-        <br />₹{expense.amount} {expense.note}
+        <br />₹{expense.amount} | {expense.note} |
       </div>
     {/each}
   </section>
   <footer>
-    <button on:click={() => getExps()}> Load Expense </button>
-    <button on:click={() => push("/add")}> New Expense </button>
+    <button on:click={() => getExps()}> More </button>
+    <input type="text" class="small" placeholder="Search Words ..." bind:value={search} />
+    <button on:click={() => push("/add")}> Add </button>
   </footer>
 {/if}
 

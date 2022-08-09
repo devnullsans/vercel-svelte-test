@@ -74,11 +74,11 @@
       <br />
       ₹{expense.amount}
     </div>
-    <button on:click={onDel}> Delete Expense </button>
+    <button on:click={onDel}> Delete </button>
   </section>
   <footer>
-    <button on:click={() => pop()}> Back Home </button>
-    <button on:click={() => push(`/edit/${expense._id ?? params.id}`)}> Edit Expense </button>
+    <button on:click={() => pop()}> Home </button>
+    <button on:click={() => push(`/edit/${expense._id ?? params.id}`)}> Edit </button>
   </footer>
 {/if}
 

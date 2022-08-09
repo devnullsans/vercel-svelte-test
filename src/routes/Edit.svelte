@@ -1,7 +1,7 @@
 <script>
   export let params = {};
   import { onMount } from "svelte";
-  import { push } from "svelte-spa-router";
+  import { push, pop } from "svelte-spa-router";
 
   let expense = {
       _id: "",
@@ -79,7 +79,7 @@
     <input type="number" placeholder="Amount" bind:value={expense.amount} />
   </section>
   <footer>
-    <button on:click={() => push("/")}> Cancel Changes </button>
-    <button on:click={onEdt}> Save Changes </button>
+    <button on:click={() => pop()}> Cancel </button>
+    <button on:click={onEdt}> Save </button>
   </footer>
 {/if}

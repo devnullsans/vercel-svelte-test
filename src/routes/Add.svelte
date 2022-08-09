@@ -47,7 +47,7 @@
   </footer>
 {:else}
   <header>
-    <strong class="bl">
+    <strong class={amount < 0 ? "re" : "gr"}>
       {timestamp?.toLocaleTimeString()}
       {timestamp?.toLocaleDateString()}
     </strong>
@@ -58,7 +58,7 @@
     <input type="number" placeholder="Amount" bind:value={amount} />
   </section>
   <footer>
-    <button on:click={() => pop()}> Cancel Home </button>
-    <button on:click={onSav}> Save Expense </button>
+    <button on:click={() => pop()}> Home </button>
+    <button on:click={onSav}> Save </button>
   </footer>
 {/if}
