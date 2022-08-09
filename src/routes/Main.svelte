@@ -5,6 +5,7 @@
   let toDate = new Date(),
     expenses = [],
     loading = false,
+    loads = 0,
     gain,
     loss;
   toDate.setHours(0, 0, 0, 0);
@@ -13,14 +14,15 @@
     if (loading) return;
     loading = true;
     try {
-      const res = await fetch(`/api?to=${toDate.getTime()}`, {
+      const res = await fetch(`/api?to=${toDate.getTime()}&${loads<3?'d':loads<5?'w':'m'}=-`, {
         method: "GET",
         headers: { authorization: `Basic ${sessionStorage.getItem("code")}` }
       });
       const { data } = await res.json();
       if (res.ok) {
         expenses = [...expenses, ...data];
-        toDate.setDate(toDate.getDate() - 1);
+        toDate.setTime(toDate.getTime() - loads<3?864e5:loads<5?5184e5:25056e5);
+        loads++;
       } else {
         sessionStorage.removeItem("code");
         push("/login");

@@ -15,8 +15,8 @@ export default async (req, res) => {
     const collection = db.collection('expenses');
     switch (req.method) {
       case 'GET': {
-        const { to, id } = req.query;
-        // console.log('GET>', to, id);
+        const { id, to, w, m } = req.query;
+        console.log('GET>', to, id, w, m);
         if (id)
           return res.status(200).json({ data: await collection.findOne({ _id: ObjectId(id) }) });
         else if (to)
@@ -25,7 +25,7 @@ export default async (req, res) => {
               {
                 timestamp: {
                   $gte: +to,
-                  $lte: +to + 864e5
+                  $lte: +to + (Boolean(m) ? 25056e5 : (Boolean(w) ? 5184e5 : 864e5))
                 }
               },
               { sort: { timestamp: -1 } }
