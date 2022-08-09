@@ -14,6 +14,7 @@
     if (loading) return;
     loading = true;
     try {
+      console.log(`/api?to=${toDate.getTime()}&${loads<3?'d':loads<5?'w':'m'}=-`);
       const res = await fetch(`/api?to=${toDate.getTime()}&${loads<3?'d':loads<5?'w':'m'}=-`, {
         method: "GET",
         headers: { authorization: `Basic ${sessionStorage.getItem("code")}` }
@@ -21,7 +22,7 @@
       const { data } = await res.json();
       if (res.ok) {
         expenses = [...expenses, ...data];
-        toDate.setTime(toDate.getTime() - loads<3?864e5:loads<5?5184e5:25056e5);
+        toDate.setTime(toDate.getTime() - ((loads<3) ? 864e5 : ((loads<5) ? 5184e5 : 25056e5)));
         loads++;
       } else {
         sessionStorage.removeItem("code");
@@ -32,6 +33,7 @@
       push("/login");
     } finally {
       loading = false;
+      console.log(toDate.getTime(), loads);
     }
   }
 
