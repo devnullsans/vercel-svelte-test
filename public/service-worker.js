@@ -47,49 +47,48 @@ self.addEventListener('activate', (evt) => {
 self.addEventListener('fetch', (evt) => {
   console.log('[ServiceWorker] Fetch', evt.request);
 
-  const { pathname } = new URL(evt.request.url);
+  const { method, url } = evt.request;
+  const { pathname } = new URL(url);
 
-  if (pathname === '/api') {
-    evt.respondWith(fetchFirst(evt.request));
-  } else {
-    evt.respondWith(cacheFirst(evt.request));
+  if (method !== 'GET' || pathname === '/api') {
+    // Not a static request, bail.
+    return;
   }
+
+  evt.respondWith(async () => await caches.match(url) ?? await fetchFirst(evt.request));
+
 });
 
 async function fetchFirst(req) {
-  try {
-    const res = await fetch(req, { credentials: 'same-origin' });
-    if (!res.ok) {
-      throw new Error(`Error: ${res.status} ${res.statusText} ${res.url}`);
+  // try {
+    const res = await fetch(req);
+    if (res.ok) {
+      // throw new Error(`Error: ${res.status} ${res.statusText} ${res.url}`);
+      const cache = await caches.open(CACHE_NAME);
+      await cache.put(req.url, res.clone());
     }
-    const cache = await caches.open(CACHE_NAME);
-    await cache.put(req.url, res.clone());
     return res;
-  } catch (err) {
-    console.info('fetchFirst', err);
-    const off = await caches.match(req);
-    if (off == null) {
-      const res = new Response(null, { status: 404 });
-      return res;
-    }
-    return off;
-  }
+  // } catch (err) {
+  //   console.info('fetchFirst', err.toString());
+  //   const off = await caches.match(req);
+  //   return (off == null) ? new Response(null, { status: 404 }) : off;
+  // }
 }
 
-async function cacheFirst(req) {
-  try {
-    const off = await caches.match(req);
-    if (off == null) {
-      return await fetchFirst(req);
-    }
-    return off;
-  } catch (err) {
-    console.info('cacheFirst', err);
-    const off = await caches.match(req);
-    if (off == null) {
-      const res = new Response(null, { status: 404 });
-      return res;
-    }
-    return off;
-  }
-}
+// async function cacheFirst(req) {
+//   try {
+//     const off = await caches.match(req);
+//     if (off == null) {
+//       return await fetchFirst(req);
+//     }
+//     return off;
+//   } catch (err) {
+//     console.info('cacheFirst', err);
+//     const off = await caches.match(req);
+//     if (off == null) {
+//       const res = new Response(null, { status: 404 });
+//       return res;
+//     }
+//     return off;
+//   }
+// }
