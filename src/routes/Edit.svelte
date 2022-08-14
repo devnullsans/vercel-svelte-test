@@ -23,7 +23,7 @@
           timestamp: expense.timestamp.getTime()
         })
       });
-      if (res.ok) push("/");
+      if (res.ok) pop();
       else {
         sessionStorage.removeItem("code");
         push("/login");

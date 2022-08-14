@@ -1,12 +1,12 @@
 <script>
-  import { pop } from "svelte-spa-router";
+  import { push } from "svelte-spa-router";
 
   let code;
 
   function login() {
     const token = btoa(code);
     sessionStorage.setItem("code", token);
-    pop();
+    push("/");
   }
 </script>
 
