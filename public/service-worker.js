@@ -51,28 +51,31 @@ self.addEventListener('fetch', (evt) => {
   const { pathname } = new URL(url);
 
   if (method !== 'GET' || pathname === '/api') {
-    // Not a static request, bail.
+    console.log('Not a static request, bail');
     return;
   }
 
-  evt.respondWith(async () => await caches.match(url) ?? await fetchFirst(evt.request));
+  evt.respondWith(fetchRequest(evt.request));
 
 });
 
-async function fetchFirst(req) {
-  // try {
-    const res = await fetch(req);
-    if (res.ok) {
-      // throw new Error(`Error: ${res.status} ${res.statusText} ${res.url}`);
-      const cache = await caches.open(CACHE_NAME);
-      await cache.put(req.url, res.clone());
+async function fetchRequest(req) {
+  try {
+    const off = await caches.match(req);
+    if (off == null) {
+      const res = await fetch(req);
+      if (res.ok) {
+        // throw new Error(`Error: ${res.status} ${res.statusText} ${res.url}`);
+        const cache = await caches.open(CACHE_NAME);
+        await cache.put(req, res.clone());
+      }
+      return res;
     }
-    return res;
-  // } catch (err) {
-  //   console.info('fetchFirst', err.toString());
-  //   const off = await caches.match(req);
-  //   return (off == null) ? new Response(null, { status: 404 }) : off;
-  // }
+    return off;
+  } catch (err) {
+    console.info('fetchRequest', err.toString());
+    return new Response(null, { status: 500 });
+  }
 }
 
 // async function cacheFirst(req) {
