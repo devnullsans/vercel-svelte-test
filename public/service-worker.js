@@ -58,7 +58,7 @@ self.addEventListener('fetch', (evt) => {
 
 async function fetchFirst(req) {
   try {
-    const res = await fetch(req);
+    const res = await fetch(req, { credentials: 'same-origin' });
     if (!res.ok) {
       throw new Error(`Error: ${res.status} ${res.statusText} ${res.url}`);
     }
