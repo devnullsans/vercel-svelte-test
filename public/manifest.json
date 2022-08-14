@@ -1,6 +1,6 @@
 {
-  "name": "SVELTE-PWA",
-  "short_name": "SVELTE-PWA",
+  "name": "Expense-Tracker",
+  "short_name": "Expense-Tracker",
   "icons": [
     {
       "src": "/images/icons/icon-128x128.png",
@@ -42,6 +42,6 @@
   "start_url": "/",
   "display_override": ["fullscreen", "minimal-ui"],
   "display": "standalone",
-  "background_color": "#3E4EB8",
-  "theme_color": "#2F3BA2"
+  "background_color": "#000",
+  "theme_color": "#000"
 }

@@ -15,11 +15,11 @@ const FILES_TO_CACHE = [
 ];
 
 self.addEventListener('install', (evt) => {
-  console.log('[ServiceWorker] Install');
+  // console.log('[ServiceWorker] Install');
 
   evt.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[ServiceWorker] Pre-caching offline pages');
+      // console.log('[ServiceWorker] Pre-caching offline pages');
       return cache.addAll(FILES_TO_CACHE);
     })
   );
@@ -28,13 +28,13 @@ self.addEventListener('install', (evt) => {
 });
 
 self.addEventListener('activate', (evt) => {
-  console.log('[ServiceWorker] Activate');
+  // console.log('[ServiceWorker] Activate');
   // Remove previous cached data from disk.
   evt.waitUntil(
     caches.keys().then((keyList) => {
       return Promise.all(keyList.map((key) => {
         if (key !== CACHE_NAME) {
-          console.log('[ServiceWorker] Removing old cache', key);
+          // console.log('[ServiceWorker] Removing old cache', key);
           return caches.delete(key);
         }
       }));
@@ -45,13 +45,13 @@ self.addEventListener('activate', (evt) => {
 });
 
 self.addEventListener('fetch', (evt) => {
-  console.log('[ServiceWorker] Fetch', evt.request);
+  // console.log('[ServiceWorker] Fetch', evt.request);
 
   const { method, url } = evt.request;
   const { pathname } = new URL(url);
 
   if (method !== 'GET' || pathname === '/api') {
-    console.log('Not a static request, bail');
+    // console.log('Not a static request, bail');
     return;
   }
 
@@ -73,7 +73,7 @@ async function fetchRequest(req) {
     }
     return off;
   } catch (err) {
-    console.info('fetchRequest', err.toString());
+    // console.info('fetchRequest', err.toString());
     return new Response(null, { status: 500 });
   }
 }

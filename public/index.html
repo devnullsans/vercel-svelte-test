@@ -5,10 +5,10 @@
 	<meta charset='utf-8'>
 	<meta name='viewport' content='width=device-width,initial-scale=1'>
 
-	<title>Svelte app</title>
+	<title>Expense-Tracker</title>
 
 	<link rel="manifest" href="/manifest.json" />
-	<meta name="description" content="Svelte PWA" />
+	<meta name="description" content="Expense-Tracker" />
 	<meta name="theme-color" content="#000" />
 
 	<!-- <meta name="apple-mobile-web-app-capable" content="yes" /> -->
@@ -22,10 +22,7 @@
 
 	<script>
 		if ('serviceWorker' in navigator)
-			navigator.serviceWorker.register('/service-worker.js')
-				// TODO remove lines below in production
-				.then(reg => console.log('service worker registered', reg))
-				.catch(err => console.log('failed to register service worker', err));
+			navigator.serviceWorker.register('/service-worker.js');
 	</script>
 
 	<script defer src='/build/bundle.js'></script>
