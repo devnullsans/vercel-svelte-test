@@ -36,8 +36,8 @@
     }
   }
 
-  $: gain = +expenses.reduce((tot, exp) => tot + ((exp.note.includes(search) && (exp.amount > 0)) ? exp.amount : 0), 0);
-  $: loss = -expenses.reduce((tot, exp) => tot + ((exp.note.includes(search) && (exp.amount < 0)) ? exp.amount : 0), 0);
+  $: gain = +expenses.reduce((tot, exp) => tot + ((exp.note?.includes(search) && (exp.amount > 0)) ? exp.amount : 0), 0);
+  $: loss = -expenses.reduce((tot, exp) => tot + ((exp.note?.includes(search) && (exp.amount < 0)) ? exp.amount : 0), 0);
   onMount(getExps);
 </script>
 
